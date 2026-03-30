@@ -10,9 +10,9 @@ Student number: 301649137
 
 Partner 2:
 
-Name:
-Email:
-Student number: 
+Name: Mengna Ma
+Email: mcm22@sfu.ca
+Student number: 301643241
 
 ## Platform and Tools
 
