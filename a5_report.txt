@@ -12,7 +12,7 @@ Partner 2:
 
 Name:
 Email:
-Student 
+Student number: 
 
 ## Platform and Tools
 
