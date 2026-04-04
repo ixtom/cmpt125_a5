@@ -13,7 +13,7 @@ struct coords{
     int player; //1 or 2
 };
 
-bool const row_con(vector<vector<int>> grid, int row, int player){
+bool row_con(const vector<vector<int>>& grid, int row, int player){
     for (int i=0;i<4;i++){ //checks column 0-3 to see if they have a chip
         if (grid[i][row]==player){
             int count=0;
@@ -29,7 +29,7 @@ bool const row_con(vector<vector<int>> grid, int row, int player){
     return false;
 }
 
-bool const col_con(vector<vector<int>> grid, int col, int player){
+bool col_con(const vector<vector<int>>& grid, int col, int player){
     for (int i=0;i<3;i++){ //checks row 0-2 to see if they have a chip
         if (grid[col][i]==player){
             int count=0;
@@ -45,11 +45,10 @@ bool const col_con(vector<vector<int>> grid, int col, int player){
     return false;
 }
 
-bool const win_con(vector<vector<int>> grid, coords move){ //vector grid is the current grid, coords move is the col and row ints of the last move. Remember to calculate this.
-    if (row_con(grid,move.row,move.player)||col_con(grid,move.col,move.player)){
-        return true;
-    }
-    return false;
+bool diagonal_con(const vector<vector<int>>& grid, int col, int row, int player){}
+
+bool win_con(const vector<vector<int>>& grid, coords move){ //vector grid is the current grid, coords move is the col and row ints of the last move. Remember to calculate this.
+    return row_con(grid,move.row,move.player)||col_con(grid,move.col,move.player||diagonal_con(grid,move.col,move.row,move.player));
 }
 
 int main(){
