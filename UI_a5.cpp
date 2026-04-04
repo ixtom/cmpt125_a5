@@ -1,0 +1,124 @@
+#include "cmpt_error.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+// Struct: 
+
+struct Player{
+        string name;
+        bool is_computer = false;
+};
+
+
+// Function Declarations:
+void title();
+void rules();
+void player_setup(Player &player1, Player &player2);
+void play_again();
+
+//Function Definitions (UI Related):
+
+void title(){
+    cout <<"░█████╗░░█████╗░███╗░░██╗███╗░░██╗███████╗░█████╗░████████╗\n";
+    cout <<"██╔══██╗██╔══██╗████╗░██║████╗░██║██╔════╝██╔══██╗╚══██╔══╝\n";
+    cout <<"██║░░╚═╝██║░░██║██╔██╗██║██╔██╗██║█████╗░░██║░░╚═╝░░░██║░░░\n";
+    cout <<"██║░░██╗██║░░██║██║╚████║██║╚████║██╔══╝░░██║░░██╗░░░██║░░░\n";
+    cout <<"╚█████╔╝╚█████╔╝██║░╚███║██║░╚███║███████╗╚█████╔╝░░░██║░░░\n";
+    cout <<"░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░╚══╝╚══════╝░╚════╝░░░░╚═╝░░░\n";
+                                                              
+
+    cout <<"███████╗░█████╗░██╗░░░██╗██████╗░\n";
+    cout <<"██╔════╝██╔══██╗██║░░░██║██╔══██╗\n";
+    cout <<"█████╗░░██║░░██║██║░░░██║██████╔╝\n";
+    cout <<"██╔══╝░░██║░░██║██║░░░██║██╔══██╗\n";
+    cout <<"██║░░░░░╚█████╔╝╚██████╔╝██║░░██║\n";
+    cout <<"╚═╝░░░░░░╚════╝░░╚═════╝░╚═╝░░╚═╝\n\n";    
+
+    cout <<"█▀█ █▀▀ ▄▀█ █▀▄ █▄█   ▀█▀ █▀█   █░█░█ █ █▄░█   █▀▀ █▀█ █░█ █▀█   █ █▄░█   ▄▀█   █▀█ █▀█ █░█░█ ▀█\n";
+    cout <<"█▀▄ ██▄ █▀█ █▄▀ ░█░   ░█░ █▄█   ▀▄▀▄▀ █ █░▀█   █▀░ █▄█ █▄█ █▀▄   █ █░▀█   █▀█   █▀▄ █▄█ ▀▄▀▄▀ ░▄\n\n\n";
+}
+void rules(){ 
+    cout << "==================================================================\n";                                           
+    cout << "𝗙𝗶𝗿𝘀𝘁 𝘆𝗼𝘂 𝗺𝘂𝘀𝘁 𝗺𝗮𝘀𝘁𝗲𝗿 𝘁𝗵𝗲 𝗿𝘂𝗹𝗲𝘀:\n\n";
+    cout << "• Choose whether to play against a friend or a computer.\n\n";
+    cout << "• Each player will have their unique anvil piece\n\n";
+    //print anvil pieces as examples
+    cout << "• Players will take turns dropping their anvil pieces into the columns of the grid.\n\n";
+    cout << "• The first player to connect four of their pieces in a row is the winner!\n";
+    cout << " - The four pieces can be connected horizontally, vertically, or diagonally.\n\n";
+    cout << "Can you become the ultimate Connect Four champion? Let's find out!\n";
+    cout << "==================================================================\n\n";
+}
+
+void player_setup(Player &player1, Player &player2){
+
+    cout <<"█▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█   █▀ █▀▀ ▀█▀   █░█ █▀█ ▀\n";
+    cout <<"█▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄   ▄█ ██▄ ░█░   █▄█ █▀▀ ▄\n\n";
+
+    cout << "Enter name for Player 1: \n--> ";
+    string line;
+    getline(cin, line);
+    player1.name = line;
+
+    while (true) {
+        cout << "Who will you play with?\n";
+        cout << "A friend (1 or f) or a Computer (2 or c)\n--> ";
+        getline(cin, line);
+        cout << "\n";
+        if (line == "1" || line == "f"){
+            cout << "𝗠𝗢𝗗𝗘: 𝗣𝗹𝗮𝘆𝗶𝗻𝗴 𝗮𝗴𝗮𝗶𝗻𝘀𝘁 𝗮 𝗙𝗿𝗶𝗲𝗻𝗱\n\n";
+            cout << "Enter name for Player 2:\n--> ";
+            getline(cin, line);
+            player2.name = line;
+            player2.is_computer = false;
+            break;
+        }
+        else if (line == "2" || line == "c"){
+            cout << "𝗠𝗢𝗗𝗘: 𝗣𝗹𝗮𝘆𝗶𝗻𝗴 𝗮𝗴𝗮𝗶𝗻𝘀𝘁 𝘁𝗵𝗲 𝗖𝗼𝗺𝗽𝘂𝘁𝗲𝗿";
+            player2.name = "Computer";
+            player2.is_computer = true;
+
+            break;
+        } else {
+            cout << "Error: invalid input, try again.\n--> ";
+        }
+    }
+            
+    cout << "\n\n" << "█▀▀ ▄▀█ █▀▄▀█ █▀▀   █▀▄▀█ █▀█ █▀▄ █▀▀ ▀   █▀█ █▄░█\n";
+    cout <<"█▄█ █▀█ █░▀░█ ██▄   █░▀░█ █▄█ █▄▀ ██▄ ▄   █▄█ █░▀█\n\n";
+
+    cout << "==========================================\n";
+    cout << player1.name << " VS " << player2.name << "\n";
+    cout << "==========================================\n";
+}
+
+void play_again(){
+    while (true){
+        cout << "Play again?\n";
+        cout << "Yes (1 or y) or No (2 or n)?\n--> ";
+        string line;
+        getline(cin, line);
+
+        if (line == "1" || line == "y"){
+            // main game function
+        }
+        else if(line == "2" || line == "n"){
+            cout << "Thanks for playing!\n";
+            break;
+        } else {
+            cout << "Error: invalid input, try again.\n--> ";
+        }
+    }
+}
+
+int main(){
+    title();
+    rules ();
+    Player p1, p2;
+    player_setup(p1, p2);
+
+    void play_again();
+    return 0;
+}
