@@ -31,8 +31,29 @@ bool const row_con(vector<vector<int>> grid, int row, int player){
     return false;
 }
 
+bool const col_con(vector<vector<int>> grid, int col, int player){
+    for (int i=0;i<3;i++){ //checks row 0-2 to see if they have a chip
+        if (grid[col][i]==player){
+            int count;
+            for (int r=i+1;r<i+3;r++){
+                if (grid[col][r]!=player){
+                    break;
+                }
+                count++;
+            }
+            if (count==3){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 bool const win_con(vector<vector<int>> grid, coords move){ //vector grid is the current grid, coords move is the col and row ints of the last move. Remember to calculate this.
-    
+    if (row_con(grid,move.row,move.player)&&col_con(grid,move.col,move.player)){
+        return true;
+    }
+    return false;
 }
 
 int main(){
