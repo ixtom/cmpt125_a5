@@ -16,16 +16,14 @@ struct coords{
 bool const row_con(vector<vector<int>> grid, int row, int player){
     for (int i=0;i<4;i++){ //checks column 0-3 to see if they have a chip
         if (grid[i][row]==player){
-            int count;
+            int count=0;
             for (int r=i+1;r<i+4;r++){
                 if (grid[r][row]!=player){
                     break;
                 }
                 count++;
             }
-            if (count==3){
-                return true;
-            }
+            if (count == 3) return true;
         }
     }
     return false;
@@ -34,23 +32,21 @@ bool const row_con(vector<vector<int>> grid, int row, int player){
 bool const col_con(vector<vector<int>> grid, int col, int player){
     for (int i=0;i<3;i++){ //checks row 0-2 to see if they have a chip
         if (grid[col][i]==player){
-            int count;
-            for (int r=i+1;r<i+3;r++){
+            int count=0;
+            for (int r=i+1;r<i+4;r++){
                 if (grid[col][r]!=player){
                     break;
                 }
                 count++;
             }
-            if (count==3){
-                return true;
-            }
+            if (count == 3) return true;
         }
     }
     return false;
 }
 
 bool const win_con(vector<vector<int>> grid, coords move){ //vector grid is the current grid, coords move is the col and row ints of the last move. Remember to calculate this.
-    if (row_con(grid,move.row,move.player)&&col_con(grid,move.col,move.player)){
+    if (row_con(grid,move.row,move.player)||col_con(grid,move.col,move.player)){
         return true;
     }
     return false;
@@ -66,4 +62,11 @@ int main(){
     {0, 0, 0, 0, 0, 0}, // Column 5
     {0, 0, 0, 0, 0, 0}  // Column 6
 };
+    coords move ={0,3,1};
+    if (win_con(verticalWin,move)){
+        cout<<"win!";
+    }
+    else{
+        cout<<"lose...";
+    }
 }
