@@ -41,7 +41,7 @@ struct coords{
 };
 
 // Function Declaration for win conditions (Mengna)
-//see: win-function.cpp for more info
+//see: win-function.cpp for more info and helper functions
 
 bool win_con(const vector<vector<int>>& grid, coords move); // the main win condition function to call. 
 
@@ -70,6 +70,15 @@ int determine_first_player(Player &player1, Player &player2);
 
 int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil);
 
+bool check_tie(const vector<vector<Cell>> &board);
+
 int cell_to_int(Cell piece);
+
+vector<vector<int>> convert_to_int_board(const vector<vector<Cell>>& board);
+
+// Computer AI (Mengna)
+
+// Main game loop (Sahaj)
+void game_loop();
 
 #endif
