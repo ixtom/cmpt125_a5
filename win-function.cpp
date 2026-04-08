@@ -175,21 +175,21 @@ bool win_con(const vector<vector<int>>& grid, coords move){ //vector grid is the
     return row_con(grid,move.row,move.player)||col_con(grid,move.col,move.player)||diagonal_con(grid,move.col,move.row,move.player);
 }
 
-int main(){
-    vector<vector<int>> verticalWin = {
-    {1, 1, 1, 1, 0, 0}, // Column 0: Four 1s stacked from bottom
-    {0, 0, 0, 0, 0, 0}, // Column 1
-    {0, 0, 0, 0, 0, 0}, // Column 2
-    {0, 0, 0, 0, 0, 0}, // Column 3
-    {0, 0, 0, 0, 0, 0}, // Column 4
-    {0, 0, 0, 0, 0, 0}, // Column 5
-    {0, 0, 0, 0, 0, 0}  // Column 6
-};
-    coords move ={0,3,1};
-    if (win_con(verticalWin,move)){
-        cout<<"win!";
-    }
-    else{
-        cout<<"lose...";
-    }
-}
+// int main(){
+//     vector<vector<int>> verticalWin = {
+//     {1, 1, 1, 1, 0, 0}, // Column 0: Four 1s stacked from bottom
+//     {0, 0, 0, 0, 0, 0}, // Column 1
+//     {0, 0, 0, 0, 0, 0}, // Column 2
+//     {0, 0, 0, 0, 0, 0}, // Column 3
+//     {0, 0, 0, 0, 0, 0}, // Column 4
+//     {0, 0, 0, 0, 0, 0}, // Column 5
+//     {0, 0, 0, 0, 0, 0}  // Column 6
+// };
+//     coords move ={0,3,1};
+//     if (win_con(verticalWin,move)){
+//         cout<<"win!";
+//     }
+//     else{
+//         cout<<"lose...";
+//     }
+// }
