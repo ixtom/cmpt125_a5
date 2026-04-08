@@ -26,15 +26,24 @@ enum class Cell{ //defining whats inside each cell
 void title();
 void rules();
 void player_setup(Player &player1, Player &player2);
-void play_again();
+bool play_again();
 string get_piece_line(Cell piece, int line);
 vector <vector<Cell>> create_board();
 void print_board(vector<vector<Cell>> &board);
-void computer_ai();
 
+
+int get_human_move(Player &player, vector<vector<Cell>> &board);
+
+bool ask_for_anvil(Player &player);
+int determine_first_player(Player &player1, Player &player2);
+bool is_column_full(vector<vector<Cell>> &board, int col);
+
+//Converting cell to int 
 
 // Making the Anvils:
 // Doing it line by line
+
+
 string get_piece_line(Cell piece, int line){
     // line = 0 (top) line = 1 (middle) line = 2 (bottom)
 
@@ -171,7 +180,32 @@ void player_setup(Player &player1, Player &player2){
     cout << "===================================================================\n";
 }
 
-void play_again(){
+int determine_first_player(Player &player1, Player &player2){
+    string choice;
+    cout << "Who goes first?\n";
+    cout << "1. " << player1.name << "\n";
+    cout << "2. " << player2.name << "\n";
+    cout << "1. Random\n-->";
+    getline(cin, choice);
+
+    if (choice == "1") return 1;
+    if (choice == "2") return 2;
+    return (rand() %2) + 1; //Random
+}
+
+int get_human_move(Player &player, vector<vector<Cell>> &board){
+    int column;
+    cout << "Enter column (from A to G):\n-->";
+    cin >> column;
+    cin.ignore();
+
+    return column;
+}
+
+int ask_for_anvil(){
+    
+}
+bool play_again(){
     while (true){
         cout << "Play again?\n";
         cout << "Yes (1 or y) or No (2 or n)?\n--> ";
@@ -179,24 +213,23 @@ void play_again(){
         getline(cin, line);
 
         if (line == "1" || line == "y"){
-            // main game function
+            return true;
         }
         else if(line == "2" || line == "n"){
             cout << "Thanks for playing!\n";
-            break;
+            return false;
         } else {
             cout << "Error: invalid input, try again.\n--> ";
         }
     }
 }
 
+
 // The Computer Strategy:
 
-void computer_ai(){
-    
-}
 
-// Main Function for testing:
+
+// Main Function:
 
 int main(){
     title();
