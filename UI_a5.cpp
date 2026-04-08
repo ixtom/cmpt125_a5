@@ -1,17 +1,11 @@
 #include "cmpt_error.h"
 #include <string>
 #include <iostream>
-
+#include <cstdlib>
 using namespace std;
 
 // Struct and class: 
 
-struct Player{
-        string name;
-        bool is_computer = false;
-        bool anvil_used = false;
-        Cell piece; 
-};
 
 enum class Cell{ //defining whats inside each cell
     Player1, 
@@ -19,6 +13,13 @@ enum class Cell{ //defining whats inside each cell
     Anvil1,
     Anvil2,
     Empty,
+};
+
+struct Player{
+        string name;
+        bool is_computer = false;
+        bool anvil_used = false;
+        Cell piece; 
 };
 
 
@@ -30,16 +31,19 @@ bool play_again();
 string get_piece_line(Cell piece, int line);
 vector <vector<Cell>> create_board();
 void print_board(vector<vector<Cell>> &board);
-
-
 int get_human_move(Player &player, vector<vector<Cell>> &board);
-
 bool ask_for_anvil(Player &player);
 int determine_first_player(Player &player1, Player &player2);
-bool is_column_full(vector<vector<Cell>> &board, int col);
+int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil);
+int cell_to_int(Cell piece);
 
-//Converting cell to int 
-
+//Converting cell to int need for the win/lose/tie logic
+int cell_to_int(Cell piece){
+    if (piece == Cell::Player1 || piece == Cell::Anvil1) return 1;
+    if (piece == Cell::Player2 || piece == Cell::Anvil1) return 2;
+    
+    return 0; // If empty
+}
 // Making the Anvils:
 // Doing it line by line
 
@@ -50,7 +54,6 @@ string get_piece_line(Cell piece, int line){
     if (piece == Cell::Empty){
         return "     ";
     }
-
     //Player tokens
     else if(piece == Cell::Player1) {
         if (line == 0) return " ––– ";
@@ -62,17 +65,16 @@ string get_piece_line(Cell piece, int line){
         if (line == 1) return " |X| ";
         if (line == 2) return " ––– ";
     }
-
     // Anvils
     else if(piece == Cell::Anvil1) {
-        if (line == 0) return " ### ";
-        if (line == 1) return " #O# ";
-        if (line == 2) return " ### ";
+        if (line == 0) return " ••• ";
+        if (line == 1) return " •O• ";
+        if (line == 2) return " ••• ";
     }
     else if(piece == Cell::Anvil2) {
-        if (line == 0) return " ### ";
-        if (line == 1) return " #X# ";
-        if (line == 2) return " ### ";
+        if (line == 0) return " ••• ";
+        if (line == 1) return " •X• ";
+        if (line == 2) return " ••• ";
     }
     return "     ";
 }
@@ -202,8 +204,40 @@ int get_human_move(Player &player, vector<vector<Cell>> &board){
     return column;
 }
 
-int ask_for_anvil(){
-    
+bool ask_for_anvil(Player &player){
+    string choice;
+    cout << "Will you use your anvil? (y/n)\n-->";
+    cin >> choice;
+    cin.ignore();
+    return (choice == "y" || choice == "Y");
+}
+
+int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil){
+    if(board[0][col] != Cell::Empty){
+        return -1; //Column would be full
+    }
+
+    if (is_anvil){
+
+        //It will destroy everything in that column
+        for (int r = 0; r < 6; r++){
+            board[r][col] = Cell::Empty;
+        }
+
+        board[5][col] = piece; // drop the piece to the bottom
+        return 5;
+    }
+    else {
+        //Regular piece logic
+
+        for (int r = 5; r >= 0; r--){ //going down the columns
+            if (board[r][col] == Cell::Empty){
+                board[r][col] = piece;
+                return r;
+            }
+        }
+    }
+    return -1;
 }
 bool play_again(){
     while (true){
@@ -225,15 +259,3 @@ bool play_again(){
 }
 
 
-// The Computer Strategy:
-
-
-
-// Main Function:
-
-int main(){
-    title();
-    rules ();
-
-    return 0;
-}
