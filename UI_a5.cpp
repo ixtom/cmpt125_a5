@@ -4,11 +4,21 @@
 
 using namespace std;
 
-// Struct: 
+// Struct and class: 
 
 struct Player{
         string name;
         bool is_computer = false;
+        bool anvil_used = false;
+        Cell piece; 
+};
+
+enum class Cell{ //defining whats inside each cell
+    Player1, 
+    Player2,
+    Anvil1,
+    Anvil2,
+    Empty,
 };
 
 
@@ -17,8 +27,75 @@ void title();
 void rules();
 void player_setup(Player &player1, Player &player2);
 void play_again();
+string get_piece_line(Cell piece, int line);
+vector <vector<Cell>> create_board();
+void print_board(vector<vector<Cell>> &board);
+void computer_ai();
 
-//Function Definitions (UI Related):
+
+// Making the Anvils:
+// Doing it line by line
+string get_piece_line(Cell piece, int line){
+    // line = 0 (top) line = 1 (middle) line = 2 (bottom)
+
+    if (piece == Cell::Empty){
+        return "     ";
+    }
+
+    //Player tokens
+    else if(piece == Cell::Player1) {
+        if (line == 0) return " ––– ";
+        if (line == 1) return " |O| ";
+        if (line == 2) return " ––– ";
+    }
+    else if(piece == Cell::Player2) {
+        if (line == 0) return " ––– ";
+        if (line == 1) return " |X| ";
+        if (line == 2) return " ––– ";
+    }
+
+    // Anvils
+    else if(piece == Cell::Anvil1) {
+        if (line == 0) return " ### ";
+        if (line == 1) return " #O# ";
+        if (line == 2) return " ### ";
+    }
+    else if(piece == Cell::Anvil2) {
+        if (line == 0) return " ### ";
+        if (line == 1) return " #X# ";
+        if (line == 2) return " ### ";
+    }
+    return "     ";
+}
+
+// Making and printing the Board:
+
+vector <vector<Cell>> create_board(){
+    return vector<vector<Cell>>(6, vector<Cell>(7, Cell::Empty)); 
+}
+
+void print_board(vector<vector<Cell>> &board){
+    cout << "     A     B     C     D     E     F     G\n";
+
+    cout << "  +-----+-----+-----+-----+-----+-----+-----+\n";
+
+    for (int r = 0; r < 6; r++){
+        for (int line = 0; line < 3; line++){
+                cout << "  ";
+                for (int c = 0; c < 7; c++){
+                cout << "|" << get_piece_line(board[r][c], line);
+                }
+            cout << "|\n";
+        }
+
+        if (r < 5){
+            cout << "  +-----+-----+-----+-----+-----+-----+-----+\n";
+        }
+    }
+
+    cout << "  +-----+-----+-----+-----+-----+-----+-----+\n";
+} 
+// Function Definitions (UI Related):
 
 void title(){
     cout <<"░█████╗░░█████╗░███╗░░██╗███╗░░██╗███████╗░█████╗░████████╗\n";
@@ -89,9 +166,9 @@ void player_setup(Player &player1, Player &player2){
     cout << "\n\n" << "█▀▀ ▄▀█ █▀▄▀█ █▀▀   █▀▄▀█ █▀█ █▀▄ █▀▀ ▀   █▀█ █▄░█\n";
     cout <<"█▄█ █▀█ █░▀░█ ██▄   █░▀░█ █▄█ █▄▀ ██▄ ▄   █▄█ █░▀█\n\n";
 
-    cout << "==========================================\n";
+    cout << "===================================================================\n";
     cout << player1.name << " VS " << player2.name << "\n";
-    cout << "==========================================\n";
+    cout << "===================================================================\n";
 }
 
 void play_again(){
@@ -113,12 +190,17 @@ void play_again(){
     }
 }
 
+// The Computer Strategy:
+
+void computer_ai(){
+    
+}
+
+// Main Function for testing:
+
 int main(){
     title();
     rules ();
-    Player p1, p2;
-    player_setup(p1, p2);
 
-    void play_again();
     return 0;
 }
