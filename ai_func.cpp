@@ -1,34 +1,6 @@
 #include "a5.h"
 #include <random>
 
-int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil){
-    (void) board;
-    if(board[0][col] != Cell::Empty){
-        return -1; //Column would be full
-    }
-
-    if (is_anvil){
-        //It will destroy everything in that column
-        for (int r = 0; r < 6; r++){
-            board[r][col] = Cell::Empty;
-        }
-
-        board[5][col] = piece; // drop the piece to the bottom
-        return 5;
-    }
-    else {
-        //Regular piece logic
-
-        for (int r = 5; r >= 0; r--){ //going down the columns
-            if (board[r][col] == Cell::Empty){
-                board[r][col] = piece;
-                return r;
-            }
-        }
-    }
-    return -1;
-}
-
 vector<vector<Cell>> computer_move(vector<vector<Cell>> board) 
 {
     const vector<vector<Cell>> original = board;
