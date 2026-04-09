@@ -1,13 +1,6 @@
 #include "a5.h"
 #include <random>
 
-int find_available_row(const vector<vector<Cell>>& board, int col) {
-    for (int r = 5; r >= 0; r--) {
-        if (board[r][col] == Cell::Empty) return r;
-    }
-    return -1;
-}
-
 int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil){
     (void) board;
     if(board[0][col] != Cell::Empty){
