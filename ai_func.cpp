@@ -1,5 +1,6 @@
 #include "a5.h"
 #include <random>
+#include <algorithm>
 
 vector<vector<Cell>> computer_move(vector<vector<Cell>> board) 
 {
