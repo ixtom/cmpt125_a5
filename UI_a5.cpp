@@ -1,41 +1,7 @@
-#include "cmpt_error.h"
-#include <string>
-#include <iostream>
-#include <cstdlib>
-using namespace std;
+#include "a5.h"
 
-// Struct and class: 
+// UI - Sahaj
 
-
-enum class Cell{ //defining whats inside each cell
-    Player1, 
-    Player2,
-    Anvil1,
-    Anvil2,
-    Empty,
-};
-
-struct Player{
-        string name;
-        bool is_computer = false;
-        bool anvil_used = false;
-        Cell piece; 
-};
-
-
-// Function Declarations:
-void title();
-void rules();
-void player_setup(Player &player1, Player &player2);
-bool play_again();
-string get_piece_line(Cell piece, int line);
-vector <vector<Cell>> create_board();
-void print_board(vector<vector<Cell>> &board);
-int get_human_move(Player &player, vector<vector<Cell>> &board);
-bool ask_for_anvil(Player &player);
-int determine_first_player(Player &player1, Player &player2);
-int drop_piece(vector<vector<Cell>> &board, int col, Cell piece, bool is_anvil);
-int cell_to_int(Cell piece);
 
 //Converting cell to int need for the win/lose/tie logic
 int cell_to_int(Cell piece){

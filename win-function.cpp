@@ -1,12 +1,10 @@
-#include <vector>
-#include <iostream>
-#include <string>
-using namespace std;
+#include "a5.h"
+
 
 // win functions to call to check for win conditions
 // - Mengna
 
-bool win_con(const vector<vector<int>>& grid, coords move); // the main win condition function to call. 
+// bool win_con(const vector<vector<int>>& grid, coords move); // the main win condition function to call. 
 
 struct coords{
     int col;
