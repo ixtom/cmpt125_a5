@@ -87,6 +87,8 @@ vector<vector<int>> convert_to_int_board(const vector<vector<Cell>>& board);
 
 // Computer AI (Mengna)
 
+computer_return computer_move(vector<vector<Cell>> board,bool anvil_used);
+
 // Main game loop (Sahaj)
 void game_loop();
 
