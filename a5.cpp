@@ -331,7 +331,7 @@ int determine_first_player(Player &player1, Player &player2){
     cout << "Who goes first?\n";
     cout << "1. " << player1.name << "\n";
     cout << "2. " << player2.name << "\n";
-    cout << "1. Random\n-->";
+    cout << "3. Random\n-->";
     getline(cin, choice);
 
     if (choice == "1") return 1;
