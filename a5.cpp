@@ -570,7 +570,7 @@ computer_return computer_move(vector<vector<Cell>> board,bool anvil_used)
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////
-//Main Game Loop (Sahaj)
+//Main Game Loop (Sahaj + Mengna)
 void game_loop(){
     //===SETUP===
 
@@ -614,7 +614,7 @@ void game_loop(){
         int col = 0;
         bool use_anvil = false;
 
-        if (current.is_computer){
+        if (current.is_computer){ // computer player move (Mengna)
             computer_return computer=computer_move(board,player2.anvil_used);
             board=computer.board;
             use_anvil = computer.anvil_used;

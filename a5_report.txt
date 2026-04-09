@@ -20,18 +20,34 @@ what operating system(s) (e.g. Windows, macOS, Linux), compiler(s) (e.g. g++,
 clang++, etc.), and editor/IDE(s) (e.g. VS Code, Sublime Text, etc.) did you
 use?
 
+macOS, VS Code, clang ++
+
+Additionally, we used git and github for team collaboration.
+View our repo here:
+https://github.com/ixtom/cmpt125_a5/
+
 ## Extra Features
 
 if your program has any extra or special features, tell us about them here
+
+we used an ennum class but for the win/lose logic we used vectors of vector ints 
+so we had to create a converting function for them.
 
 ## Limitations and Known Bugs
 
 list all known bugs here, including features that are missing or do not work as
 expected
 
+After selecting play again against the computer, the anvil use does not reset and results in a game without the anvil.
+
 ## Help and References
 
 what people and tools helped you; if you used AI, how did you use it?
+Sahaj:
+https://www.geeksforgeeks.org/cpp/enum-classes-in-c-and-their-advantage-over-enum-datatype/
+
+Mengna:
+I used Gemini to help look up the random choice feature of the AI/computer decision function.
 
 ## Statement of Originality
 
