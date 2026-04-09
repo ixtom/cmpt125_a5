@@ -431,7 +431,140 @@ bool play_again(){
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //Computer AI (Mengna)
+computer_return computer_move(vector<vector<Cell>> board,bool anvil_used) 
+{
+    const vector<vector<Cell>> original = board;
+    
+    for (int col = 0; col < 7; col++) // Attempt to win w/o anvil
+    {
+        int row =drop_piece(board, col, Cell::Player2, false);
 
+        if (row != -1) {
+            //convert board vector to int vector (sadge, function miscommunication problem)
+            vector<vector<int>> int_board = convert_to_int_board(board);
+
+            coords move;
+            move.col = col;
+            move.row = 5 - row;
+            move.player = 2;
+            if (win_con(int_board, move)){
+                computer_return computer_move;
+                computer_move.board=board;
+                computer_move.anvil_used=false;
+                computer_move.row=row;
+                computer_move.col=col;
+                return computer_move;
+            } // winning board is found, return the winning board
+
+            board= original; // revert the simulation/test
+        }
+    }
+
+    if (anvil_used==false){
+        for (int col = 0; col < 7; col++) // Attempt to win with anvil
+        {
+            int row =drop_piece(board, col, Cell::Anvil2, true);
+        
+            if (row != -1) {
+                //convert board vector to int vector (sadge, function miscommunication problem)
+                vector<vector<int>> int_board = convert_to_int_board(board);
+
+                coords move;
+                move.col = col;
+                move.row = 5 - row;
+                move.player = 2;
+                if (win_con(int_board, move)){
+                    computer_return computer_move;
+                    computer_move.board=board;
+                    computer_move.anvil_used=true;
+                    computer_move.row=row;
+                    computer_move.col=col;
+                    return computer_move;
+                }; // winning board is found, return the winning board
+
+                board= original; // revert the simulation/test
+            }
+        }
+
+        for (int col = 0; col < 7; col++) // Attempt to block player1's win WITH anvil
+        {
+            int row =drop_piece(board, col, Cell::Anvil1, true);
+            if (row != -1) {
+
+                vector<vector<int>> int_board = convert_to_int_board(board);
+
+                coords move;
+                move.col = col;
+                move.row = 5 - row;
+                move.player = 1;
+
+                if (win_con(int_board, move)) {
+                    board = original;
+                    drop_piece(board, col, Cell::Anvil2, true);
+                    computer_return computer_move;
+                    computer_move.board=board;
+                    computer_move.anvil_used=true;
+                    computer_move.row=row;
+                    computer_move.col=col;
+                    return computer_move; // return the board with blocking the player1 win move
+                }
+                board = original; // revert the simulation/test
+            }
+        }
+    }
+
+    for (int col = 0; col < 7; col++) // Attempt to block player1's win w/o anvil
+    {
+        int row =drop_piece(board, col, Cell::Player1, false);
+        if (row != -1) {
+
+            vector<vector<int>> int_board = convert_to_int_board(board);
+
+            coords move;
+            move.col = col;
+            move.row = 5 - row;
+            move.player = 1;
+
+            if (win_con(int_board, move)) {
+                board = original;
+                drop_piece(board, col, Cell::Player2, false);
+                computer_return computer_move;
+                computer_move.board=board;
+                computer_move.anvil_used=false;
+                computer_move.row=row;
+                computer_move.col=col;
+                return computer_move; // return the board with blocking the player1 win move
+            }
+            board= original; // revert the simulation/test
+        }
+    }
+
+
+    vector<int> columns = {0, 1, 2, 3, 4, 5, 6}; // if there is no immediate win, the computer picks a random column to place the chip.
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(columns.begin(), columns.end(), g);
+
+    for (int col : columns) {
+        int row = drop_piece(board, col, Cell::Player2, false);
+        
+        if (row != -1) {
+            computer_return computer_move;
+            computer_move.board=board;
+            computer_move.anvil_used=false;
+            computer_move.row=row;
+            computer_move.col=col;
+            return computer_move;
+        }
+        board = original;
+    }
+
+    // in case of a tie or the board is full (I don't think this'll happen, but just in case)
+    computer_return computer_move;
+    computer_move.board=board;
+    computer_move.anvil_used=false;
+    return computer_move; 
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -482,20 +615,37 @@ void game_loop(){
         bool use_anvil = false;
 
         if (current.is_computer){
-            //get computer move + ai 
-            //cout << current.name << " chose column " << col << "\n";
-            //print board
-                // TEMPORARY: random move until partner delivers AI
-            do {
-                col = rand() % 7 + 1;
-            } while (board[0][col-1] != Cell::Empty);
-            
-            // TEMPORARY: random anvil usage (30% chance if available)
-            if (!current.anvil_used && (rand() % 100) < 30) {
-                use_anvil = true;
-                cout << current.name << " uses ANVIL!\n";
+            computer_return computer=computer_move(board,player2.anvil_used);
+            board=computer.board;
+            use_anvil = computer.anvil_used;
+
+            vector<vector<int>> int_board = convert_to_int_board(board);
+
+            coords move;
+            move.col = computer.col;
+            move.row = 5 - computer.row;
+            move.player = 2;
+
+            if (win_con(int_board, move)){
+                print_board(board);
+                cout << "\n HOORAY! THE COMPUTER WINS!!!\n";
+                game_over = true;
             }
-        } else { // the human player move
+
+            //Checking for tie
+
+            else if (check_tie(board)){
+                print_board(board);
+                cout << "\n IT'S A TIE!\n";
+                cout << "NO more space on the board so no one wins ...\n";
+                game_over = true;
+            }
+            if (use_anvil){
+            current.anvil_used = true;
+            cout << "Anvil has been used! The computer can't use it anymore this round.\n";
+            }
+        } 
+        else { // the human player move
             col = get_human_move(current, board);
 
             if (col == -1){
@@ -505,43 +655,42 @@ void game_loop(){
             if(!current.anvil_used){
                 use_anvil = ask_for_anvil(current);
             }
-        }
+            //dropping the piece
+            int row = drop_piece(board, col-1, current.piece, use_anvil);
 
-        //dropping the piece
-        int row = drop_piece(board, col-1, current.piece, use_anvil);
+            if (row == -1){
+                cout << "This column is full! Try another.\n";
+                continue;
+            }
 
-        if (row == -1){
-            cout << "This column is full! Try another.\n";
-            continue;
-        }
+            //Mark if anvil is used
+            if (use_anvil){
+                current.anvil_used = true;
+                cout << "Anvil has been used! Can't use it anymore this round.\n";
+            }
 
-        //Mark if anvil is used
-        if (use_anvil){
-            current.anvil_used = true;
-            cout << "Anvil has been used! Can't use it anymore this round.\n";
-        }
+            //Checking for win:
+            vector<vector<int>> int_board = convert_to_int_board(board);
 
-        //Checking for win:
-        vector<vector<int>> int_board = convert_to_int_board(board);
+            coords move;
+            move.col = col - 1;
+            move.row = 5 - row;
+            move.player = cell_to_int(current.piece);
 
-        coords move;
-        move.col = col - 1;
-        move.row = 5 - row;
-        move.player = cell_to_int(current.piece);
+            if (win_con(int_board, move)){
+                print_board(board);
+                cout << "\n HOORAY! " << current.name << " WINS!!!\n";
+                game_over = true;
+            }
 
-        if (win_con(int_board, move)){
-            print_board(board);
-            cout << "\n HOORAY! " << current.name << " WINS!!!\n";
-            game_over = true;
-        }
+            //Checking for tie
 
-        //Checking for tie
-
-        else if (check_tie(board)){
-            print_board(board);
-            cout << "\n IT'S A TIE!\n";
-            cout << "NO more space on the board so no one wins ...\n";
-            game_over = true;
+            else if (check_tie(board)){
+                print_board(board);
+                cout << "\n IT'S A TIE!\n";
+                cout << "NO more space on the board so no one wins ...\n";
+                game_over = true;
+            }
         }
     
         //Switch players turns:

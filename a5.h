@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <random>
+#include <algorithm>
 using namespace std;
 
 // Contains structs, classes and delcarstions for the functions used in our game 
@@ -38,6 +40,13 @@ struct coords{
     {
         return col ==rhs.col && row ==rhs.row && player == rhs.player;
     }
+};
+// using for computer decision function
+struct computer_return{
+    vector<vector<Cell>> board;
+    int row;
+    int col;
+    bool anvil_used;
 };
 
 // Function Declaration for win conditions (Mengna)
